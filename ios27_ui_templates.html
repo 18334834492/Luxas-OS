@@ -1,0 +1,613 @@
+# iOS 27 界面模板
+
+## 主桌面界面
+
+### 界面结构
+```
+┌─────────────────────────────────────┐
+│  ┌───────────────────────────────┐  │
+│  │  🌌 Aurora Background         │  │
+│  │  (动态粒子 + 渐变)             │  │
+│  └───────────────────────────────┘  │
+│                                     │
+│  ┌───────────────────────────────┐  │
+│  │  🔮 AI Assistant (悬浮卡片)    │  │
+│  │  "今天有什么可以帮你的吗？"     │  │
+│  └───────────────────────────────┘  │
+│                                     │
+│  ┌──────┐ ┌──────┐ ┌──────┐       │
+│  │ App  │ │ App  │ │ App  │       │
+│  │图标  │ │图标  │ │图标  │       │
+│  └──────┘ └──────┘ └──────┘       │
+│                                     │
+│  ┌───────────────────────────────┐  │
+│  │  Widget: 天气 / 日历 / 音乐    │  │
+│  └───────────────────────────────┘  │
+│                                     │
+│  📱 Dock (底部)                     │
+│  ┌────┐ ┌────┐ ┌────┐ ┌────┐     │
+│  │📱  │ │⌚️  │ │🎵  │ │⚙️  │     │
+│  └────┘ └────┘ └────┘ └────┘     │
+│                                     │
+│  📱 Control Center (下拉)          │
+│  ┌───────────────────────────────┐  │
+│  │  🔔 🔋 🔍 🎵 📱 ⚙️ 🌙 🏠    │  │
+│  └───────────────────────────────┘  │
+└─────────────────────────────────────┘
+```
+
+### 界面代码
+```html
+<!-- iOS 27 主桌面 -->
+<div class="ios-desktop">
+  <!-- 背景：Aurora 粒子渐变 -->
+  <div class="ios-background">
+    <canvas id="aurora-canvas"></canvas>
+    <div class="aurora-gradient"></div>
+  </div>
+
+  <!-- AI 悬浮助手 -->
+  <div class="ios-ai-assistant">
+    <div class="ai-avatar">
+      <div class="ai-pulse"></div>
+      <span class="ai-icon">✨</span>
+    </div>
+    <div class="ai-content">
+      <p class="ai-message">今天有什么可以帮你的吗？</p>
+      <div class="ai-suggestions">
+        <span class="ai-suggestion">📱 打开相机</span>
+        <span class="ai-suggestion">🎵 播放音乐</span>
+        <span class="ai-suggestion">⌚️ 查看时间</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 应用图标网格 -->
+  <div class="ios-app-grid">
+    <div class="ios-app-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+      <span class="app-icon">📱</span>
+      <span class="app-name">相机</span>
+    </div>
+    <div class="ios-app-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+      <span class="app-icon">📸</span>
+      <span class="app-name">照片</span>
+    </div>
+    <div class="ios-app-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+      <span class="app-icon">🎵</span>
+      <span class="app-name">音乐</span>
+    </div>
+    <div class="ios-app-icon" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+      <span class="app-icon">🎬</span>
+      <span class="app-name">视频</span>
+    </div>
+    <div class="ios-app-icon" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+      <span class="app-icon">💬</span>
+      <span class="app-name">消息</span>
+    </div>
+    <div class="ios-app-icon" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);">
+      <span class="app-icon">📧</span>
+      <span class="app-name">邮件</span>
+    </div>
+  </div>
+
+  <!-- Widget 区域 -->
+  <div class="ios-widgets">
+    <div class="ios-widget weather-widget">
+      <div class="widget-header">北京</div>
+      <div class="widget-content">
+        <span class="widget-icon">☀️</span>
+        <span class="widget-temp">26°C</span>
+        <span class="widget-desc">晴朗</span>
+      </div>
+    </div>
+    <div class="ios-widget calendar-widget">
+      <div class="widget-header">日历</div>
+      <div class="widget-content">
+        <span class="widget-date">今天</span>
+        <span class="widget-event">团队会议</span>
+      </div>
+    </div>
+    <div class="ios-widget music-widget">
+      <div class="widget-header">正在播放</div>
+      <div class="widget-content">
+        <span class="widget-artist">周杰伦</span>
+        <span class="widget-track">稻香</span>
+        <div class="widget-progress">
+          <div class="progress-bar"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dock -->
+  <div class="ios-dock">
+    <div class="dock-item">📱</div>
+    <div class="dock-item">⌚️</div>
+    <div class="dock-item">🎵</div>
+    <div class="dock-item">⚙️</div>
+  </div>
+
+  <!-- Control Center -->
+  <div class="ios-control-center">
+    <div class="control-row">
+      <button class="control-btn">🔔</button>
+      <button class="control-btn">🔋</button>
+      <button class="control-btn">🔍</button>
+      <button class="control-btn">🎵</button>
+      <button class="control-btn">📱</button>
+      <button class="control-btn">⚙️</button>
+      <button class="control-btn">🌙</button>
+      <button class="control-btn">🏠</button>
+    </div>
+  </div>
+</div>
+```
+
+---
+
+## 窗口样式
+
+### iOS 27 窗口卡片
+```css
+.ios-window {
+  background: var(--ios-glass-bg);
+  backdrop-filter: var(--ios-glass-blur);
+  border-radius: var(--ios-radius-card);
+  box-shadow: var(--ios-shadow-glass);
+  border: var(--ios-glass-v2-border);
+  transition: all 0.3s var(--ios-ease);
+}
+
+.ios-window:hover {
+  box-shadow: var(--ios-shadow-glow);
+  transform: scale(1.02);
+}
+
+.ios-window-header {
+  background: var(--ios-glass-bg);
+  backdrop-filter: var(--ios-glass-blur);
+  padding: 16px 20px;
+  border-radius: var(--ios-radius-card) var(--ios-radius-card) 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ios-window-title {
+  font-size: var(--ios-h5);
+  font-weight: 600;
+  color: var(--ios-text-color);
+}
+
+.ios-window-content {
+  padding: 20px;
+  min-height: 200px;
+}
+
+.ios-window-footer {
+  padding: 16px 20px;
+  border-top: 1px solid var(--ios-glass-border);
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--ios-spacing-md);
+}
+```
+
+---
+
+## 模态框
+
+### iOS 27 模态框
+```html
+<div class="ios-modal-overlay">
+  <div class="ios-modal ios-modal-card">
+    <div class="ios-modal-header">
+      <h2 class="ios-modal-title">设置</h2>
+      <button class="ios-modal-close">✕</button>
+    </div>
+    <div class="ios-modal-body">
+      <div class="ios-modal-section">
+        <h3 class="ios-section-title">外观</h3>
+        <div class="ios-toggle-group">
+          <button class="ios-toggle ios-toggle-active">浅色</button>
+          <button class="ios-toggle">深色</button>
+          <button class="ios-toggle">自动</button>
+        </div>
+      </div>
+      <div class="ios-modal-section">
+        <h3 class="ios-section-title">通知</h3>
+        <div class="ios-switch">
+          <input type="checkbox" id="notifications" checked>
+          <label for="notifications">启用通知</label>
+        </div>
+      </div>
+    </div>
+    <div class="ios-modal-footer">
+      <button class="ios-button ios-button-secondary">取消</button>
+      <button class="ios-button ios-button-primary">完成</button>
+    </div>
+  </div>
+</div>
+```
+
+---
+
+## 应用界面
+
+### iOS 27 设置界面
+```html
+<div class="ios-settings">
+  <div class="ios-settings-header">
+    <h1 class="ios-settings-title">设置</h1>
+  </div>
+
+  <div class="ios-settings-list">
+    <!-- 个人资料 -->
+    <div class="ios-settings-item">
+      <div class="settings-avatar">
+        <img src="avatar.jpg" alt="头像">
+      </div>
+      <div class="settings-info">
+        <h3 class="settings-name">用户</h3>
+        <p class="settings-subtitle">Apple ID, iCloud, 媒体与购买项目</p>
+      </div>
+      <div class="settings-chevron">›</div>
+    </div>
+
+    <!-- 分组 -->
+    <div class="ios-settings-group">
+      <h3 class="ios-group-title">飞行模式</h3>
+      <div class="ios-switch-group">
+        <label class="ios-switch">
+          <input type="checkbox" checked>
+          <div class="ios-switch-track">
+            <div class="ios-switch-thumb"></div>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <div class="ios-settings-group">
+      <h3 class="ios-group-title">Wi-Fi</h3>
+      <div class="ios-settings-item">
+        <span class="settings-text">LuxasOS</span>
+        <div class="settings-status">已连接</div>
+        <div class="settings-chevron">›</div>
+      </div>
+    </div>
+
+    <div class="ios-settings-group">
+      <h3 class="ios-group-title">蓝牙</h3>
+      <div class="ios-settings-item">
+        <span class="settings-text">AirPods Pro</span>
+        <div class="settings-status">已连接</div>
+        <div class="settings-chevron">›</div>
+      </div>
+    </div>
+
+    <div class="ios-settings-group">
+      <h3 class="ios-group-title">通用</h3>
+      <div class="ios-settings-item">
+        <span class="settings-text">关于本机</span>
+        <div class="settings-chevron">›</div>
+      </div>
+      <div class="ios-settings-item">
+        <span class="settings-text">显示与亮度</span>
+        <div class="settings-chevron">›</div>
+      </div>
+      <div class="ios-settings-item">
+        <span class="settings-text">声音与触感</span>
+        <div class="settings-chevron">›</div>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+---
+
+## AI 界面
+
+### iOS 27 AI 界面
+```html
+<div class="ios-ai-dashboard">
+  <!-- AI 顶部卡片 -->
+  <div class="ios-ai-card ai-card-primary">
+    <div class="ai-card-header">
+      <div class="ai-card-icon">✨</div>
+      <div class="ai-card-info">
+        <h3 class="ai-card-title">AI 助手</h3>
+        <p class="ai-card-subtitle">随时为您服务</p>
+      </div>
+    </div>
+    <div class="ai-card-actions">
+      <button class="ios-button ios-button-primary">
+        开始对话
+      </button>
+      <button class="ios-button ios-button-secondary">
+        快捷指令
+      </button>
+    </div>
+  </div>
+
+  <!-- AI 能力展示 -->
+  <div class="ios-ai-grid">
+    <div class="ios-ai-card">
+      <div class="ai-card-icon">💬</div>
+      <h4 class="ai-card-title">对话</h4>
+      <p class="ai-card-desc">智能对话，理解上下文</p>
+    </div>
+    <div class="ios-ai-card">
+      <div class="ai-card-icon">🔍</div>
+      <h4 class="ai-card-title">搜索</h4>
+      <p class="ai-card-desc">快速检索文件和信息</p>
+    </div>
+    <div class="ios-ai-card">
+      <div class="ai-card-icon">🤖</div>
+      <h4 class="ai-card-title">自动化</h4>
+      <p class="ai-card-desc">智能任务自动化</p>
+    </div>
+    <div class="ios-ai-card">
+      <div class="ai-card-icon">🎨</div>
+      <h4 class="ai-card-title">创作</h4>
+      <p class="ai-card-desc">AI 辅助内容创作</p>
+    </div>
+  </div>
+
+  <!-- 最近对话 -->
+  <div class="ios-ai-conversations">
+    <h3 class="ai-section-title">最近对话</h3>
+    <div class="ai-conversation-item">
+      <div class="conversation-avatar">
+        <div class="ai-icon">✨</div>
+      </div>
+      <div class="conversation-content">
+        <p class="conversation-title">帮我写一个 Python 脚本</p>
+        <p class="conversation-preview"># Python 脚本示例...</p>
+      </div>
+      <div class="conversation-time">2分钟前</div>
+    </div>
+    <div class="ai-conversation-item">
+      <div class="conversation-avatar">
+        <div class="ai-icon">✨</div>
+      </div>
+      <div class="conversation-content">
+        <p class="conversation-title">解释量子计算</p>
+        <p class="conversation-preview">量子计算使用量子比特...</p>
+      </div>
+      <div class="conversation-time">1小时前</div>
+    </div>
+  </div>
+</div>
+```
+
+---
+
+## 控制中心
+
+### iOS 27 控制中心
+```html
+<div class="ios-control-center">
+  <div class="control-center-grid">
+    <!-- 第一行：常用 -->
+    <div class="control-row">
+      <div class="control-tile">
+        <div class="control-icon">🔔</div>
+        <div class="control-label">通知</div>
+        <div class="control-switch ios-switch-active"></div>
+      </div>
+      <div class="control-tile">
+        <div class="control-icon">🔋</div>
+        <div class="control-label">电池</div>
+        <div class="control-value">85%</div>
+      </div>
+      <div class="control-tile">
+        <div class="control-icon">🔍</div>
+        <div class="control-label">搜索</div>
+      </div>
+      <div class="control-tile">
+        <div class="control-icon">🎵</div>
+        <div class="control-label">音乐</div>
+        <div class="control-progress">
+          <div class="progress-fill" style="width: 65%"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 第二行：功能 -->
+    <div class="control-row">
+      <div class="control-tile">
+        <div class="control-icon">📱</div>
+        <div class="control-label">相机</div>
+      </div>
+      <div class="control-tile">
+        <div class="control-icon">⌚️</div>
+        <div class="control-label">计时器</div>
+      </div>
+      <div class="control-tile">
+        <div class="control-icon">⚙️</div>
+        <div class="control-label">设置</div>
+      </div>
+      <div class="control-tile">
+        <div class="control-icon">🌙</div>
+        <div class="control-label">深色模式</div>
+        <div class="control-switch ios-switch-active"></div>
+      </div>
+    </div>
+
+    <!-- 第三行：控制 -->
+    <div class="control-row">
+      <div class="control-tile">
+        <div class="control-icon">🏠</div>
+        <div class="control-label">家庭</div>
+      </div>
+      <div class="control-tile">
+        <div class="control-icon">💡</div>
+        <div class="control-label">亮度</div>
+        <div class="control-slider">
+          <div class="slider-fill" style="width: 80%"></div>
+        </div>
+      </div>
+      <div class="control-tile">
+        <div class="control-icon">🔊</div>
+        <div class="control-label">音量</div>
+        <div class="control-slider">
+          <div class="slider-fill" style="width: 60%"></div>
+        </div>
+      </div>
+      <div class="control-tile">
+        <div class="control-icon">🌡️</div>
+        <div class="control-label">温度</div>
+        <div class="control-value">24°C</div>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+---
+
+## 动画效果
+
+### iOS 27 粒子动画
+```css
+.ios-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: -1;
+}
+
+.aurora-gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--ios-gradient-aurora);
+  opacity: 0.6;
+  animation: auroraMove 20s ease-in-out infinite;
+}
+
+@keyframes auroraMove {
+  0%, 100% {
+    transform: translate(-5%, -5%) scale(1);
+  }
+  50% {
+    transform: translate(5%, 5%) scale(1.1);
+  }
+}
+
+#aurora-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* 粒子 */
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  animation: particleFloat 10s ease-in-out infinite;
+}
+
+@keyframes particleFloat {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translateY(-100px) rotate(180deg);
+    opacity: 0.8;
+  }
+}
+```
+
+---
+
+## 壁纸
+
+### iOS 27 Aurora 壁纸
+```css
+.ios-wallpaper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    135deg,
+    #1a2980 0%,
+    #26d0ce 50%,
+    #667eea 100%
+  );
+  background-size: 400% 400%;
+  animation: wallpaperGradient 15s ease infinite;
+}
+
+@keyframes wallpaperGradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* 粒子效果 */
+.wallpaper-particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.wallpaper-particle {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  animation: particleRise 8s ease-in-out infinite;
+}
+
+@keyframes particleRise {
+  0% {
+    transform: translateY(100vh) scale(0);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(-100px) scale(1);
+    opacity: 0;
+  }
+}
+```
+
+---
+
+## 总结
+
+iOS 27 设计特点：
+- ✨ 极简主义
+- 🌊 流畅动画
+- 💎 玻璃态美学
+- 🎯 智能感知
+- 📱 空间感知
+- 🔮 AI 驱动
+- 🎨 粒子特效
+- 📐 精确间距
+- 🌓 主题切换
+- 🎭 3D 触感
+
+这些模板可以直接应用到 Luxas Shell 桌面系统中，打造出符合 iOS 27 风格的现代化界面！

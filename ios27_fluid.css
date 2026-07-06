@@ -1,0 +1,575 @@
+/* ============================================
+   Luxas OS — 流畅动画增强层 v2
+   弹簧物理 · 微交互 · 视差 · 手势反馈
+   ============================================ */
+
+:root {
+  /* ── 弹簧缓动 ── */
+  --spring-snappy:    cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --spring-gentle:    cubic-bezier(0.34, 1.56, 0.64, 1);
+  --spring-bouncy:    cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --spring-soft:      cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --spring-liquid:    cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* ── 平滑缓动 ── */
+  --ease-smooth:      cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-out-expo:    cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-in-out-quart:cubic-bezier(0.76, 0, 0.24, 1);
+  --ease-out-quart:   cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-out-back:    cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-elastic:     cubic-bezier(0.68, -0.6, 0.32, 1.6);
+
+  /* ── 动画时长（更细腻的分级） ── */
+  --dur-instant:    0.05s;
+  --dur-fastest:    0.1s;
+  --dur-faster:     0.15s;
+  --dur-fast:       0.2s;
+  --dur-normal:     0.35s;
+  --dur-slow:       0.5s;
+  --dur-slower:     0.7s;
+  --dur-slowest:    1s;
+  --dur-page:       0.6s;
+
+  /* ── 视差因子 ── */
+  --parallax-speed-slow: 0.3;
+  --parallax-speed-mid:  0.5;
+  --parallax-speed-fast: 0.8;
+}
+
+/* ==========================================
+   1. 全局过渡基底
+   ========================================== */
+*,
+*::before,
+*::after {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* 一切可交互元素的基础过渡 */
+a, button, input, select, textarea,
+.ios-button, .ios-app-icon, .dock-item,
+.ios-suggestion, .control-btn,
+.window-button, .ios-modal-close {
+  transition:
+    transform var(--dur-faster) var(--spring-soft),
+    opacity var(--dur-fast) var(--ease-smooth),
+    box-shadow var(--dur-faster) var(--ease-smooth),
+    background var(--dur-fast) var(--ease-smooth),
+    color var(--dur-fast) var(--ease-smooth);
+  will-change: transform;
+}
+
+/* ==========================================
+   2. 弹簧微交互（按压 / 悬浮）
+   ========================================== */
+
+/* 按钮按压 */
+.ios-button:active:not(:disabled) {
+  transform: scale(0.94);
+  transition-duration: var(--dur-instant);
+}
+
+.ios-button-primary:active:not(:disabled) {
+  box-shadow: 0 2px 8px rgba(0, 122, 255, 0.3);
+}
+
+/* 按钮悬浮 */
+.ios-button-primary:hover:not(:disabled) {
+  transform: translateY(-1px) scale(1.02);
+  box-shadow: 0 8px 24px rgba(0, 122, 255, 0.25);
+}
+
+.ios-button-secondary:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.85);
+  transform: translateY(-1px);
+}
+
+/* 应用图标悬浮 */
+.ios-app-icon {
+  transition:
+    transform var(--dur-normal) var(--spring-gentle),
+    box-shadow var(--dur-normal) var(--ease-smooth);
+}
+
+.ios-app-icon:hover {
+  transform: translateY(-6px) scale(1.08);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+}
+
+.ios-app-icon:active {
+  transform: scale(0.92);
+  transition-duration: var(--dur-fastest);
+}
+
+/* Dock 图标 */
+.dock-item {
+  transition:
+    transform var(--dur-normal) var(--spring-gentle),
+    filter var(--dur-fast) var(--ease-smooth);
+}
+
+.dock-item:hover {
+  transform: translateY(-8px) scale(1.12);
+  filter: brightness(1.2);
+}
+
+.dock-item:active {
+  transform: scale(0.9);
+}
+
+/* AI 建议标签 */
+.ai-suggestion {
+  transition:
+    transform var(--dur-fast) var(--spring-soft),
+    background var(--dur-fast) var(--ease-smooth),
+    box-shadow var(--dur-fast) var(--ease-smooth);
+  cursor: pointer;
+}
+
+.ai-suggestion:hover {
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.2);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.ai-suggestion:active {
+  transform: scale(0.95);
+}
+
+/* ==========================================
+   3. 开关组件 — 流畅拨动
+   ========================================== */
+.ios-switch-track {
+  transition:
+    background var(--dur-normal) var(--ease-smooth);
+}
+
+.ios-switch-thumb {
+  transition:
+    transform var(--dur-normal) var(--spring-gentle),
+    box-shadow var(--dur-normal) var(--ease-smooth);
+}
+
+.ios-switch input:checked + .ios-switch-track .ios-switch-thumb {
+  transform: translateX(24px);
+  box-shadow: 0 2px 8px rgba(0, 122, 255, 0.3);
+}
+
+/* ==========================================
+   4. 窗口动画（打开 / 关闭 / 最小化）
+   ========================================== */
+.ios-window {
+  transition:
+    transform var(--dur-slow) var(--spring-gentle),
+    opacity var(--dur-normal) var(--ease-smooth),
+    box-shadow var(--dur-normal) var(--ease-smooth);
+}
+
+.ios-window.entering {
+  animation: windowEnter var(--dur-slow) var(--spring-gentle) forwards;
+}
+
+.ios-window.exiting {
+  animation: windowExit var(--dur-normal) var(--ease-in-out-quart) forwards;
+}
+
+.ios-window.minimized {
+  transform: scale(0.8) translateY(100vh);
+  opacity: 0;
+  pointer-events: none;
+}
+
+@keyframes windowEnter {
+  0% {
+    transform: scale(0.85) translateY(20px);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes windowExit {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.8) translateY(-20px);
+    opacity: 0;
+  }
+}
+
+/* ==========================================
+   5. 模态框动画
+   ========================================== */
+.ios-modal-overlay {
+  transition:
+    opacity var(--dur-normal) var(--ease-smooth),
+    visibility 0s var(--dur-normal);
+}
+
+.ios-modal-overlay.active {
+  transition:
+    opacity var(--dur-normal) var(--ease-smooth),
+    visibility 0s 0s;
+}
+
+.ios-modal-overlay:not(.active) {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.ios-modal {
+  transition:
+    transform var(--dur-slow) var(--spring-gentle),
+    opacity var(--dur-normal) var(--ease-smooth);
+}
+
+.ios-modal-overlay.active .ios-modal {
+  animation: modalEnter var(--dur-slow) var(--spring-gentle) forwards;
+}
+
+.ios-modal-overlay:not(.active) .ios-modal {
+  transform: scale(0.9) translateY(20px);
+  opacity: 0;
+}
+
+@keyframes modalEnter {
+  0% {
+    transform: scale(0.9) translateY(20px);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ==========================================
+   6. 控制中心 — 弹性滑入
+   ========================================== */
+.ios-control-center {
+  transition:
+    transform var(--dur-slow) var(--spring-gentle),
+    opacity var(--dur-normal) var(--ease-smooth);
+}
+
+.ios-control-center.hidden {
+  transform: translateY(-120%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ==========================================
+   7. 卡片悬浮效果
+   ========================================== */
+.ios-widget {
+  transition:
+    transform var(--dur-normal) var(--spring-soft),
+    box-shadow var(--dur-normal) var(--ease-smooth),
+    background var(--dur-normal) var(--ease-smooth);
+}
+
+.ios-widget:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+}
+
+/* ==========================================
+   8. AI 脉冲呼吸
+   ========================================== */
+@keyframes breathe {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0.9;
+  }
+}
+
+.ai-pulse {
+  animation: pulse 2.5s var(--ease-in-out-quart) infinite;
+}
+
+/* 增强脉冲 — 更柔和的呼吸感 */
+@keyframes pulse-soft {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scale(1.25);
+    opacity: 0.05;
+  }
+}
+
+/* ==========================================
+   9. 极光背景 — 流畅位移
+   ========================================== */
+.aurora-gradient {
+  animation: auroraDrift 25s var(--ease-in-out-quart) infinite;
+}
+
+@keyframes auroraDrift {
+  0% {
+    transform: translate(-3%, -3%) scale(1);
+    filter: hue-rotate(0deg);
+  }
+  25% {
+    transform: translate(2%, -1%) scale(1.05);
+    filter: hue-rotate(5deg);
+  }
+  50% {
+    transform: translate(4%, 3%) scale(1.1);
+    filter: hue-rotate(10deg);
+  }
+  75% {
+    transform: translate(-1%, 2%) scale(1.05);
+    filter: hue-rotate(5deg);
+  }
+  100% {
+    transform: translate(-3%, -3%) scale(1);
+    filter: hue-rotate(0deg);
+  }
+}
+
+/* ==========================================
+   10. 页面切换过渡
+   ========================================== */
+.page-transition-enter {
+  opacity: 0;
+  transform: translateY(12px) scale(0.98);
+}
+
+.page-transition-enter-active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transition:
+    opacity var(--dur-slow) var(--ease-out-expo),
+    transform var(--dur-slow) var(--ease-out-expo);
+}
+
+/* ==========================================
+   11. 骨架屏（加载占位）
+   ========================================== */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.06) 25%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0.06) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s var(--ease-in-out-quart) infinite;
+  border-radius: var(--ios-radius-md);
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* ==========================================
+   12. 通知弹入
+   ========================================== */
+.ios-notification {
+  animation: notificationSlide var(--dur-slower) var(--spring-gentle) forwards;
+}
+
+@keyframes notificationSlide {
+  0% {
+    transform: translateX(120%) scale(0.9);
+    opacity: 0;
+  }
+  60% {
+    transform: translateX(-5%) scale(1.02);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+}
+
+/* ==========================================
+   13. 进度条流动
+   ========================================== */
+.progress-bar {
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  animation: progressGlow 2s var(--ease-in-out-quart) infinite;
+}
+
+@keyframes progressGlow {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 200%;
+  }
+}
+
+/* ==========================================
+   14. 拖拽态（窗口 / 卡片）
+   ========================================== */
+.dragging {
+  cursor: grabbing !important;
+  transition:
+    box-shadow var(--dur-fast) var(--ease-smooth),
+    transform 0s !important;
+  box-shadow:
+    0 24px 64px rgba(0, 0, 0, 0.2),
+    0 8px 16px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* ==========================================
+   15. Dock 弹出动画
+   ========================================== */
+@keyframes dockBounce {
+  0% {
+    transform: translateY(100%) scale(0.8);
+    opacity: 0;
+  }
+  50% {
+    transform: translateY(-8%) scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+.ios-dock {
+  animation: dockBounce var(--dur-slower) var(--spring-gentle) forwards;
+}
+
+/* ==========================================
+   16. 应用图标 — 长按抖动（编辑模式）
+   ========================================== */
+.app-grid-editing .ios-app-icon {
+  animation: iconWiggle 0.3s var(--ease-in-out-quart) infinite;
+}
+
+@keyframes iconWiggle {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-1.5deg);
+  }
+  75% {
+    transform: rotate(1.5deg);
+  }
+}
+
+/* ==========================================
+   17. 暗黑模式平滑过渡
+   ========================================== */
+@media (prefers-color-scheme: dark) {
+  :root {
+    transition:
+      background-color var(--dur-slow) var(--ease-smooth),
+      color var(--dur-slow) var(--ease-smooth);
+  }
+}
+
+/* 手动切换暗黑模式的过渡 */
+.theme-transitioning,
+.theme-transitioning * {
+  transition:
+    background-color var(--dur-slow) var(--ease-smooth),
+    color var(--dur-slow) var(--ease-smooth),
+    border-color var(--dur-slow) var(--ease-smooth),
+    box-shadow var(--dur-slow) var(--ease-smooth) !important;
+}
+
+/* ==========================================
+   18. 响应式缩减动画（省电/辅助）
+   ========================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ==========================================
+   19. Widget 内容渐入
+   ========================================== */
+.ios-widget {
+  animation: widgetFadeIn var(--dur-slow) var(--ease-out-expo) forwards;
+  opacity: 0;
+}
+
+.ios-widget:nth-child(1) { animation-delay: 0.05s; }
+.ios-widget:nth-child(2) { animation-delay: 0.12s; }
+.ios-widget:nth-child(3) { animation-delay: 0.2s; }
+
+@keyframes widgetFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(12px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ==========================================
+   20. 应用图标入场（错峰渐入）
+   ========================================== */
+.ios-app-icon {
+  animation: appIconEnter var(--dur-slow) var(--spring-gentle) forwards;
+  opacity: 0;
+  transform: scale(0.6);
+}
+
+.ios-app-icon:nth-child(1) { animation-delay: 0.02s; }
+.ios-app-icon:nth-child(2) { animation-delay: 0.06s; }
+.ios-app-icon:nth-child(3) { animation-delay: 0.1s; }
+.ios-app-icon:nth-child(4) { animation-delay: 0.14s; }
+.ios-app-icon:nth-child(5) { animation-delay: 0.18s; }
+.ios-app-icon:nth-child(6) { animation-delay: 0.22s; }
+.ios-app-icon:nth-child(7) { animation-delay: 0.26s; }
+.ios-app-icon:nth-child(8) { animation-delay: 0.3s; }
+
+@keyframes appIconEnter {
+  0% {
+    opacity: 0;
+    transform: scale(0.6) translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}

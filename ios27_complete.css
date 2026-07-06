@@ -1,0 +1,695 @@
+/* iOS 27 完整样式实现 */
+
+/* ==================== 基础设置 ==================== */
+:root {
+  /* 颜色系统 */
+  --ios-blue: #007AFF;
+  --ios-blue-light: #5AC8FA;
+  --ios-blue-dark: #0056B3;
+  --ios-purple: #AF52DE;
+  --ios-pink: #FF2D55;
+  --ios-orange: #FF9500;
+  --ios-green: #34C759;
+  --ios-teal: #5AC8FA;
+  --ios-indigo: #5856D6;
+
+  --ios-white: #FFFFFF;
+  --ios-gray-1: #F2F2F7;
+  --ios-gray-2: #E5E5EA;
+  --ios-gray-3: #D1D1D6;
+  --ios-gray-4: #AEAEB2;
+  --ios-gray-5: #8E8E93;
+  --ios-gray-6: #636366;
+  --ios-gray-7: #48484A;
+  --ios-gray-8: #3A3A3C;
+  --ios-gray-9: #1C1C1E;
+  --ios-gray-10: #2C2C2E;
+
+  --ios-black: #000000;
+
+  /* 渐变 */
+  --ios-gradient-sunset: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --ios-gradient-ocean: linear-gradient(135deg, #2193b0 0%, #6dd5ed 100%);
+  --ios-gradient-aurora: linear-gradient(135deg, #1a2980 0%, #26d0ce 100%);
+  --ios-gradient-forest: linear-gradient(135deg, #134E5E 0%, #71B280 100%);
+
+  /* 字体 */
+  --ios-font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", sans-serif;
+  --ios-font-mono: "SF Mono", "Monaco", "Courier New", monospace;
+
+  /* 间距 */
+  --ios-spacing-xs: 4px;
+  --ios-spacing-sm: 8px;
+  --ios-spacing-md: 12px;
+  --ios-spacing-lg: 16px;
+  --ios-spacing-xl: 24px;
+  --ios-spacing-2xl: 32px;
+  --ios-spacing-3xl: 48px;
+  --ios-spacing-4xl: 64px;
+  --ios-spacing-5xl: 80px;
+
+  /* 圆角 */
+  --ios-radius-sm: 8px;
+  --ios-radius-md: 12px;
+  --ios-radius-lg: 16px;
+  --ios-radius-xl: 24px;
+  --ios-radius-2xl: 32px;
+  --ios-radius-full: 9999px;
+  --ios-radius-pill: 60px;
+  --ios-radius-card: 20px;
+  --ios-radius-button: 14px;
+
+  /* 阴影 */
+  --ios-shadow-light: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
+  --ios-shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.08);
+  --ios-shadow-deep: 0 8px 32px rgba(0, 0, 0, 0.16), 0 4px 8px rgba(0, 0, 0, 0.12);
+  --ios-shadow-glow: 0 0 20px rgba(0, 122, 255, 0.3);
+  --ios-shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.1);
+
+  /* 玻璃态 */
+  --ios-glass-bg: rgba(255, 255, 255, 0.7);
+  --ios-glass-border: rgba(255, 255, 255, 0.5);
+  --ios-glass-blur: blur(20px);
+  --ios-glass-v2-bg: rgba(255, 255, 255, 0.65);
+  --ios-glass-v2-blur: blur(30px);
+
+  /* 动画 */
+  --ios-animation-fast: 0.2s;
+  --ios-animation-normal: 0.3s;
+  --ios-animation-slow: 0.5s;
+  --ios-ease: cubic-bezier(0.4, 0.0, 0.2, 1);
+  --ios-ease-in: cubic-bezier(0.4, 0.0, 1, 1);
+  --ios-ease-out: cubic-bezier(0.0, 0.0, 0.2, 1);
+  --ios-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ios-spring: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+  /* 暗黑模式 */
+  --ios-dark-bg: var(--ios-gray-9);
+  --ios-dark-surface: var(--ios-gray-10);
+  --ios-dark-text: var(--ios-white);
+  --ios-dark-secondary-text: var(--ios-gray-4);
+  --ios-dark-border: var(--ios-gray-7);
+}
+
+/* ==================== 桌面背景 ==================== */
+.ios-desktop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.ios-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+.aurora-gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--ios-gradient-aurora);
+  opacity: 0.6;
+  animation: auroraMove 20s ease-in-out infinite;
+}
+
+@keyframes auroraMove {
+  0%, 100% {
+    transform: translate(-5%, -5%) scale(1);
+  }
+  50% {
+    transform: translate(5%, 5%) scale(1.1);
+  }
+}
+
+#aurora-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* ==================== AI 助手 ==================== */
+.ios-ai-assistant {
+  position: fixed;
+  top: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 400px;
+  z-index: 100;
+}
+
+.ai-avatar {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  margin: 0 auto;
+}
+
+.ai-pulse {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(102, 126, 234, 0.4);
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.4;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 0;
+  }
+}
+
+.ai-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+}
+
+.ai-content {
+  background: var(--ios-glass-bg);
+  backdrop-filter: var(--ios-glass-blur);
+  border-radius: var(--ios-radius-card);
+  padding: 16px 20px;
+  margin-top: 12px;
+  box-shadow: var(--ios-shadow-glass);
+  border: var(--ios-glass-v2-border);
+}
+
+.ai-message {
+  font-size: var(--ios-body-medium);
+  color: var(--ios-text-color);
+  margin-bottom: 12px;
+}
+
+.ai-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ai-suggestion {
+  background: rgba(102, 126, 234, 0.1);
+  color: var(--ios-blue);
+  padding: 6px 16px;
+  border-radius: var(--ios-radius-pill);
+  font-size: var(--ios-caption);
+  cursor: pointer;
+  transition: all var(--ios-animation-normal) var(--ios-ease);
+}
+
+.ai-suggestion:hover {
+  background: rgba(102, 126, 234, 0.2);
+  transform: scale(1.05);
+}
+
+/* ==================== 应用图标网格 ==================== */
+.ios-app-grid {
+  position: fixed;
+  bottom: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: grid;
+  grid-template-columns: repeat(4, 80px);
+  gap: 20px;
+}
+
+.ios-app-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: var(--ios-radius-xl);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--ios-animation-normal) var(--ios-ease);
+  box-shadow: var(--ios-shadow-light);
+}
+
+.ios-app-icon:hover {
+  transform: scale(1.1);
+  box-shadow: var(--ios-shadow-glow);
+}
+
+.app-icon {
+  font-size: 32px;
+  margin-bottom: 4px;
+}
+
+.app-name {
+  font-size: var(--ios-caption);
+  color: var(--ios-text-color);
+  font-weight: 500;
+}
+
+/* ==================== Widget ==================== */
+.ios-widgets {
+  position: fixed;
+  bottom: 200px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 20px;
+  width: 100%;
+  justify-content: center;
+}
+
+.ios-widget {
+  background: var(--ios-glass-bg);
+  backdrop-filter: var(--ios-glass-blur);
+  border-radius: var(--ios-radius-lg);
+  padding: 16px 20px;
+  width: 280px;
+  box-shadow: var(--ios-shadow-glass);
+  border: var(--ios-glass-v2-border);
+  transition: all var(--ios-animation-normal) var(--ios-ease);
+}
+
+.ios-widget:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--ios-shadow-medium);
+}
+
+.widget-header {
+  font-size: var(--ios-caption);
+  color: var(--ios-secondary-text);
+  margin-bottom: 8px;
+}
+
+.widget-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.widget-icon {
+  font-size: 28px;
+}
+
+.widget-temp {
+  font-size: var(--ios-h3);
+  font-weight: 600;
+}
+
+.widget-desc {
+  font-size: var(--ios-caption);
+  color: var(--ios-secondary-text);
+}
+
+/* ==================== Dock ==================== */
+.ios-dock {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 120px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: var(--ios-glass-blur);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dock-item {
+  font-size: 40px;
+  transition: all var(--ios-animation-normal) var(--ios-ease);
+}
+
+.dock-item:hover {
+  transform: scale(1.2);
+}
+
+/* ==================== Control Center ==================== */
+.ios-control-center {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(30px);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all var(--ios-animation-slow) var(--ios-ease);
+}
+
+.ios-control-center.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.control-center-grid {
+  width: 320px;
+  background: var(--ios-glass-bg);
+  backdrop-filter: var(--ios-glass-blur);
+  border-radius: var(--ios-radius-2xl);
+  padding: 20px;
+  box-shadow: var(--ios-shadow-deep);
+  border: var(--ios-glass-v2-border);
+}
+
+.control-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.control-tile {
+  width: 70px;
+  height: 70px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: var(--ios-radius-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: all var(--ios-animation-fast) var(--ios-ease);
+}
+
+.control-tile:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05);
+}
+
+.control-icon {
+  font-size: 24px;
+}
+
+.control-label {
+  font-size: var(--ios-caption);
+  color: var(--ios-secondary-text);
+}
+
+.control-value {
+  font-size: var(--ios-caption);
+  color: var(--ios-text-color);
+}
+
+.control-switch {
+  width: 44px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  position: relative;
+  cursor: pointer;
+  transition: all var(--ios-animation-fast) var(--ios-ease);
+}
+
+.control-switch.active {
+  background: var(--ios-blue);
+}
+
+.control-switch::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  background: white;
+  border-radius: 50%;
+  transition: all var(--ios-animation-fast) var(--ios-ease);
+}
+
+.control-switch.active::after {
+  left: 22px;
+}
+
+.control-slider {
+  position: relative;
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.slider-fill {
+  height: 100%;
+  background: var(--ios-blue);
+  border-radius: 2px;
+}
+
+.control-progress {
+  position: relative;
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--ios-green);
+  border-radius: 2px;
+}
+
+/* ==================== 窗口样式 ==================== */
+.ios-window {
+  background: var(--ios-glass-bg);
+  backdrop-filter: var(--ios-glass-blur);
+  border-radius: var(--ios-radius-card);
+  box-shadow: var(--ios-shadow-glass);
+  border: var(--ios-glass-v2-border);
+  transition: all var(--ios-animation-normal) var(--ios-ease);
+}
+
+.ios-window:hover {
+  box-shadow: var(--ios-shadow-glow);
+  transform: scale(1.02);
+}
+
+.ios-window-header {
+  background: var(--ios-glass-bg);
+  backdrop-filter: var(--ios-glass-blur);
+  padding: 16px 20px;
+  border-radius: var(--ios-radius-card) var(--ios-radius-card) 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ios-window-title {
+  font-size: var(--ios-h5);
+  font-weight: 600;
+  color: var(--ios-text-color);
+}
+
+.ios-window-content {
+  padding: 20px;
+  min-height: 200px;
+}
+
+.ios-window-footer {
+  padding: 16px 20px;
+  border-top: 1px solid var(--ios-glass-border);
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--ios-spacing-md);
+}
+
+/* ==================== 按钮 ==================== */
+.ios-button {
+  padding: 12px 24px;
+  border-radius: var(--ios-radius-button);
+  font-size: var(--ios-body-medium);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--ios-animation-fast) var(--ios-ease);
+  border: none;
+  outline: none;
+}
+
+.ios-button-primary {
+  background: var(--ios-blue);
+  color: white;
+  box-shadow: var(--ios-shadow-light);
+}
+
+.ios-button-primary:hover {
+  background: var(--ios-blue-dark);
+  box-shadow: var(--ios-shadow-glow);
+  transform: scale(1.02);
+}
+
+.ios-button-secondary {
+  background: var(--ios-gray-2);
+  color: var(--ios-text-color);
+}
+
+.ios-button-secondary:hover {
+  background: var(--ios-gray-3);
+}
+
+/* ==================== 模态框 ==================== */
+.ios-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all var(--ios-animation-normal) var(--ios-ease);
+}
+
+.ios-modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.ios-modal {
+  background: var(--ios-white);
+  border-radius: var(--ios-radius-2xl);
+  box-shadow: var(--ios-shadow-deep);
+  width: 90%;
+  max-width: 500px;
+  transform: scale(0.9);
+  transition: all var(--ios-animation-normal) var(--ios-ease);
+}
+
+.ios-modal-overlay.active .ios-modal {
+  transform: scale(1);
+}
+
+.ios-modal-header {
+  padding: 20px;
+  border-bottom: 1px solid var(--ios-gray-2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ios-modal-title {
+  font-size: var(--ios-h3);
+  font-weight: 600;
+}
+
+.ios-modal-close {
+  background: none;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: var(--ios-gray-5);
+  transition: color var(--ios-animation-fast) var(--ios-ease);
+}
+
+.ios-modal-close:hover {
+  color: var(--ios-text-color);
+}
+
+.ios-modal-body {
+  padding: 20px;
+}
+
+.ios-modal-footer {
+  padding: 20px;
+  border-top: 1px solid var(--ios-gray-2);
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+/* ==================== 开关 ==================== */
+.ios-switch {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.ios-switch input {
+  display: none;
+}
+
+.ios-switch-track {
+  width: 51px;
+  height: 31px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  position: relative;
+  transition: background var(--ios-animation-fast) var(--ios-ease);
+}
+
+.ios-switch input:checked + .ios-switch-track {
+  background: var(--ios-blue);
+}
+
+.ios-switch-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 27px;
+  height: 27px;
+  background: white;
+  border-radius: 50%;
+  transition: transform var(--ios-animation-fast) var(--ios-ease);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.ios-switch input:checked + .ios-switch-track .ios-switch-thumb {
+  transform: translateX(20px);
+}
+
+/* ==================== 粒子效果 ==================== */
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+@keyframes particleFloat {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translateY(-100px) rotate(180deg);
+    opacity: 0.8;
+  }
+}
+
+/* ==================== 暗黑模式 ==================== */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ios-text-color: var(--ios-white);
+    --ios-secondary-text: var(--ios-gray-4);
+    --ios-glass-bg: rgba(28, 28, 30, 0.7);
+    --ios-glass-border: rgba(255, 255, 255, 0.1);
+  }
+}

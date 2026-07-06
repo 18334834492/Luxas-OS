@@ -1,0 +1,573 @@
+# iOS 27 设计规范
+
+## 设计哲学
+
+### 1. 极简主义 (Minimalism)
+- 去除所有不必要的元素
+- 每个像素都有其目的
+- 留白是设计的一部分
+
+### 2. 流畅自然 (Fluidity)
+- 动画持续 0.3-0.5 秒
+- 使用贝塞尔曲线
+- 惯性滚动和弹性效果
+
+### 3. 智能感知 (Intelligence)
+- AI驱动的内容推荐
+- 上下文感知的界面
+- 预测性交互
+
+### 4. 玻璃态美学 (Glassmorphism)
+- 模糊背景
+- 半透明效果
+- 柔和阴影
+
+### 5. 3D 触感 (3D Haptics)
+- 沉浸式触觉反馈
+- 动态纹理变化
+- 空间感知
+
+---
+
+## 颜色系统
+
+### 主色调
+```css
+/* iOS 27 调色板 */
+--ios-blue: #007AFF;
+--ios-blue-light: #5AC8FA;
+--ios-blue-dark: #0056B3;
+
+--ios-purple: #AF52DE;
+--ios-purple-light: #BF5AF2;
+--ios-purple-dark: #7B1FA2;
+
+--ios-pink: #FF2D55;
+--ios-pink-light: #FF375F;
+--ios-pink-dark: #C51162;
+
+--ios-orange: #FF9500;
+--ios-orange-light: #FF9F0A;
+--ios-orange-dark: #CC7700;
+
+--ios-green: #34C759;
+--ios-green-light: #30D158;
+--ios-green-dark: #248A3D;
+
+--ios-teal: #5AC8FA;
+--ios-teal-light: #64D2FF;
+--ios-teal-dark: #0077B6;
+
+--ios-indigo: #5856D6;
+--ios-indigo-light: #5E5CE6;
+--ios-indigo-dark: #3730A3;
+```
+
+### 中性色
+```css
+--ios-white: #FFFFFF;
+--ios-gray-1: #F2F2F7;
+--ios-gray-2: #E5E5EA;
+--ios-gray-3: #D1D1D6;
+--ios-gray-4: #AEAEB2;
+--ios-gray-5: #8E8E93;
+--ios-gray-6: #636366;
+--ios-gray-7: #48484A;
+--ios-gray-8: #3A3A3C;
+--ios-black: #000000;
+
+/* iOS 27 新增 */
+--ios-gray-9: #1C1C1E;
+--ios-gray-10: #2C2C2E;
+```
+
+### 渐变色
+```css
+/* 背景渐变 */
+--ios-gradient-sunset:
+  linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+--ios-gradient-ocean:
+  linear-gradient(135deg, #2193b0 0%, #6dd5ed 100%);
+
+--ios-gradient-aurora:
+  linear-gradient(135deg, #1a2980 0%, #26d0ce 100%);
+
+--ios-gradient-forest:
+  linear-gradient(135deg, #134E5E 0%, #71B280 100%);
+
+/* 玻璃态渐变 */
+--ios-glass-gradient:
+  linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.3) 0%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+```
+
+---
+
+## 字体系统
+
+### 字体栈
+```css
+/* iOS 27 系统字体 */
+font-family: -apple-system,
+             BlinkMacSystemFont,
+             "SF Pro Text",
+             "SF Pro Display",
+             "Helvetica Neue",
+             sans-serif;
+
+/* 等宽字体 */
+font-family: "SF Mono",
+             "Monaco",
+             "Courier New",
+             monospace;
+
+/* 中文支持 */
+font-family: "PingFang SC",
+             "Hiragino Sans GB",
+             "Microsoft YaHei",
+             -apple-system,
+             sans-serif;
+```
+
+### 字体层级
+```css
+/* 标题 */
+--ios-h1: 34px / 42px / Bold;
+--ios-h2: 28px / 34px / Semibold;
+--ios-h3: 22px / 28px / Semibold;
+--ios-h4: 20px / 24px / Regular;
+--ios-h5: 17px / 22px / Regular;
+--ios-h6: 15px / 20px / Regular;
+
+/* 正文 */
+--ios-body-large: 17px / 22px / Regular;
+--ios-body-medium: 16px / 21px / Regular;
+--ios-body-small: 15px / 20px / Regular;
+--ios-caption: 13px / 17px / Regular;
+--ios-caption2: 12px / 16px / Regular;
+```
+
+### 间距系统
+```css
+--ios-spacing-xs: 4px;
+--ios-spacing-sm: 8px;
+--ios-spacing-md: 12px;
+--ios-spacing-lg: 16px;
+--ios-spacing-xl: 24px;
+--ios-spacing-2xl: 32px;
+--ios-spacing-3xl: 48px;
+--ios-spacing-4xl: 64px;
+--ios-spacing-5xl: 80px;
+```
+
+---
+
+## 圆角系统
+
+### 圆角规范
+```css
+--ios-radius-sm: 8px;
+--ios-radius-md: 12px;
+--ios-radius-lg: 16px;
+--ios-radius-xl: 24px;
+--ios-radius-2xl: 32px;
+--ios-radius-full: 9999px;
+```
+
+### iOS 27 新增
+```css
+--ios-radius-pill: 60px;  /* 胶囊形 */
+--ios-radius-card: 20px;  /* 卡片形 */
+--ios-radius-button: 14px; /* 按钮形 */
+```
+
+---
+
+## 阴影系统
+
+### iOS 27 阴影
+```css
+/* 浅阴影 - 悬浮元素 */
+--ios-shadow-light:
+  0 2px 8px rgba(0, 0, 0, 0.08),
+  0 1px 3px rgba(0, 0, 0, 0.06);
+
+/* 中阴影 - 卡片 */
+--ios-shadow-medium:
+  0 4px 16px rgba(0, 0, 0, 0.12),
+  0 2px 4px rgba(0, 0, 0, 0.08);
+
+/* 深阴影 - 模态框 */
+--ios-shadow-deep:
+  0 8px 32px rgba(0, 0, 0, 0.16),
+  0 4px 8px rgba(0, 0, 0, 0.12);
+
+/* iOS 27 新增 */
+--ios-shadow-glow:
+  0 0 20px rgba(0, 122, 255, 0.3);
+
+--ios-shadow-glass:
+  0 8px 32px rgba(0, 0, 0, 0.1);
+```
+
+---
+
+## 玻璃态效果
+
+### 玻璃态配置
+```css
+--ios-glass-bg: rgba(255, 255, 255, 0.7);
+--ios-glass-border: rgba(255, 255, 255, 0.5);
+--ios-glass-blur: blur(20px);
+--ios-glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+
+/* iOS 27 增强版 */
+--ios-glass-v2-bg: rgba(255, 255, 255, 0.65);
+--ios-glass-v2-blur: blur(30px);
+--ios-glass-v2-border: 1px solid rgba(255, 255, 255, 0.6);
+```
+
+---
+
+## 动画系统
+
+### 动画时长
+```css
+--ios-animation-fast: 0.2s;
+--ios-animation-normal: 0.3s;
+--ios-animation-slow: 0.5s;
+--ios-animation-slower: 0.8s;
+```
+
+### 缓动函数
+```css
+--ios-ease: cubic-bezier(0.4, 0.0, 0.2, 1);
+--ios-ease-in: cubic-bezier(0.4, 0.0, 1, 1);
+--ios-ease-out: cubic-bezier(0.0, 0.0, 0.2, 1);
+--ios-ease-in-out: cubic-bezier(0.4, 0.0, 0.2, 1);
+--ios-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+--ios-spring: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+```
+
+### 动画效果
+```css
+/* 淡入淡出 */
+--ios-fade-in: fadeIn 0.3s var(--ios-ease);
+--ios-fade-out: fadeOut 0.2s var(--ios-ease-out);
+
+/* 缩放 */
+--ios-scale-in: scaleIn 0.3s var(--ios-spring);
+--ios-scale-out: scaleOut 0.2s var(--ios-ease-out);
+
+/* 滑动 */
+--ios-slide-up: slideUp 0.4s var(--ios-ease);
+--ios-slide-down: slideDown 0.3s var(--ios-ease-out);
+--ios-slide-in-left: slideInLeft 0.3s var(--ios-ease);
+--ios-slide-in-right: slideInRight 0.3s var(--ios-ease);
+
+/* 旋转 */
+--ios-rotate: rotate 0.6s var(--ios-spring);
+```
+
+---
+
+## 粒子特效
+
+### 粒子系统
+```css
+/* 粒子配置 */
+--ios-particle-count: 50;
+--ios-particle-size: 4px;
+--ios-particle-speed: 2s;
+--ios-particle-opacity: 0.6;
+
+/* iOS 27 新增 */
+--ios-particle-gradient: linear-gradient(
+  135deg,
+  #667eea 0%,
+  #764ba2 100%
+);
+
+--ios-particle-glow: 0 0 10px rgba(102, 126, 234, 0.5);
+```
+
+---
+
+## 交互反馈
+
+### 触感反馈
+```css
+/* 轻触 */
+--ios-haptic-light: {
+  type: "light",
+  intensity: 0.5,
+  duration: 0.1s
+}
+
+/* 重触 */
+--ios-haptic-medium: {
+  type: "medium",
+  intensity: 0.8,
+  duration: 0.15s
+}
+
+/* 深触 */
+--ios-haptic-heavy: {
+  type: "heavy",
+  intensity: 1.0,
+  duration: 0.2s
+}
+
+/* 成功 */
+--ios-haptic-success: {
+  type: "success",
+  intensity: 0.9,
+  duration: 0.3s
+}
+
+/* 警告 */
+--ios-haptic-warning: {
+  type: "warning",
+  intensity: 0.7,
+  duration: 0.2s
+}
+```
+
+### 按压效果
+```css
+/* iOS 27 按压 */
+--ios-press-scale: 0.95;
+--ios-press-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+--ios-press-duration: 0.1s;
+```
+
+---
+
+## 界面组件
+
+### 按钮样式
+```css
+/* 主按钮 */
+--ios-button-primary: {
+  background: var(--ios-blue),
+  color: var(--ios-white),
+  padding: 12px 24px,
+  radius: var(--ios-radius-button),
+  shadow: var(--ios-shadow-light)
+}
+
+/* 次要按钮 */
+--ios-button-secondary: {
+  background: var(--ios-gray-2),
+  color: var(--ios-black),
+  padding: 12px 24px,
+  radius: var(--ios-radius-button)
+}
+
+/* 胶囊按钮 */
+--ios-button-pill: {
+  background: var(--ios-blue),
+  color: var(--ios-white),
+  padding: 8px 20px,
+  radius: var(--ios-radius-pill)
+}
+
+/* 图标按钮 */
+--ios-button-icon: {
+  width: 44px,
+  height: 44px,
+  radius: var(--ios-radius-full),
+  background: var(--ios-gray-1),
+  padding: 12px
+}
+```
+
+### 卡片样式
+```css
+/* iOS 27 卡片 */
+--ios-card: {
+  background: var(--ios-white),
+  padding: 20px,
+  radius: var(--ios-radius-card),
+  shadow: var(--ios-shadow-glass),
+  border: 1px solid var(--ios-glass-border)
+}
+
+/* 玻璃态卡片 */
+--ios-card-glass: {
+  background: var(--ios-glass-bg),
+  backdrop-filter: var(--ios-glass-blur),
+  padding: 24px,
+  radius: var(--ios-radius-card),
+  shadow: var(--ios-shadow-glass),
+  border: var(--ios-glass-v2-border)
+}
+```
+
+### 导航栏
+```css
+/* iOS 27 导航栏 */
+--ios-navbar: {
+  background: var(--ios-glass-bg),
+  backdrop-filter: var(--ios-glass-blur),
+  height: 88px,
+  padding: 0 16px,
+  shadow: var(--ios-shadow-glass),
+  border-bottom: var(--ios-glass-v2-border)
+}
+```
+
+---
+
+## iOS 27 独有特性
+
+### 1. 空间感知UI
+- 根据设备姿态调整界面
+- 沉浸式全屏体验
+- 动态布局
+
+### 2. AI 驱动的界面
+- 上下文感知的推荐
+- 预测性内容
+- 智能分组
+
+### 3. 增强现实集成
+- AR 界面元素
+- 空间UI组件
+- 实时渲染
+
+### 4. 环境感知
+- 根据环境调整UI
+- 暗光模式优化
+- 强光模式优化
+
+### 5. 3D 触感反馈
+- 动态纹理
+- 空间音效
+- 沉浸式触感
+
+---
+
+## 响应式设计
+
+### 断点
+```css
+--ios-breakpoint-sm: 375px;   /* 小屏 */
+--ios-breakpoint-md: 768px;   /* 中屏 */
+--ios-breakpoint-lg: 1024px;  /* 大屏 */
+--ios-breakpoint-xl: 1280px;  /* 超大屏 */
+```
+
+### 布局模式
+```css
+/* 流式布局 */
+--ios-layout-fluid: fluid;
+
+/* 网格布局 */
+--ios-layout-grid: grid;
+
+/* 灵活布局 */
+--ios-layout-flex: flex;
+
+/* iOS 27 新增 */
+--ios-layout-masonry: masonry;
+--ios-layout-polar: polar;
+```
+
+---
+
+## 主题切换
+
+### 暗黑模式
+```css
+/* iOS 27 暗黑模式 */
+--ios-dark-bg: var(--ios-gray-9);
+--ios-dark-surface: var(--ios-gray-10);
+--ios-dark-text: var(--ios-white);
+--ios-dark-secondary-text: var(--ios-gray-4);
+--ios-dark-border: var(--ios-gray-7);
+```
+
+### 浅色模式
+```css
+/* iOS 27 浅色模式 */
+--ios-light-bg: var(--ios-white);
+--ios-light-surface: var(--ios-gray-1);
+--ios-light-text: var(--ios-black);
+--ios-light-secondary-text: var(--ios-gray-5);
+--ios-light-border: var(--ios-gray-2);
+```
+
+---
+
+## 使用示例
+
+### 基础组件
+```html
+<!-- iOS 27 风格按钮 -->
+<button class="ios-button ios-button-primary">
+  主操作
+</button>
+
+<!-- iOS 27 风格卡片 -->
+<div class="ios-card">
+  <h2>标题</h2>
+  <p>内容描述</p>
+</div>
+
+<!-- iOS 27 玻璃态导航栏 -->
+<nav class="ios-navbar">
+  <h1>页面标题</h1>
+</nav>
+```
+
+### CSS 变量使用
+```css
+:root {
+  --ios-primary-color: var(--ios-blue);
+  --ios-background: var(--ios-white);
+  --ios-text-color: var(--ios-black);
+}
+
+body {
+  background: var(--ios-background);
+  color: var(--ios-text-color);
+  font-family: var(--ios-font-family);
+}
+```
+
+---
+
+## 设计工具
+
+### 推荐工具
+- Figma - 界面设计
+- Sketch - 原型设计
+- Adobe XD - 交互设计
+- Principle - 动画设计
+- After Effects - 高级动画
+
+### 资源
+- iOS 27 Design System
+- Apple Human Interface Guidelines
+- Material Design 3
+- Fluent UI
+- Ant Design
+
+---
+
+## 更新日志
+
+### iOS 27 设计规范
+- 📅 2027年发布
+- ✨ 全新的玻璃态 V2
+- 🎨 增强的色彩系统
+- 🌟 粒子特效支持
+- 🎯 智能感知UI
+- 💎 3D 触感反馈
+- 📱 空间感知布局
+- 🔮 AI 驱动设计
